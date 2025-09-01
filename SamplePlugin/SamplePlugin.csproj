@@ -14,4 +14,12 @@
       <Visible>false</Visible>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ECommons" Version="3.0.1.10" />
+  </ItemGroup>
+  
+	<ItemGroup>
+	  <PackageReference Update="DalamudPackager" Version="13.0.0" />
+	</ItemGroup>
 </Project>

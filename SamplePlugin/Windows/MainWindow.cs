@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Game.Gui;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using Lumina.Excel.Sheets;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 
 namespace SamplePlugin.Windows;
 
@@ -12,6 +14,7 @@ public class MainWindow : Window, IDisposable
 {
     private string GoatImagePath;
     private Plugin Plugin;
+    
 
     // We give this window a hidden ID using ##.
     // The user will see "My Amazing Window" as window title,
@@ -27,11 +30,12 @@ public class MainWindow : Window, IDisposable
 
         GoatImagePath = goatImagePath;
         Plugin = plugin;
+
     }
 
     public void Dispose() { }
 
-    public override void Draw()
+    public override unsafe void Draw()
     {
         ImGui.TextUnformatted($"The random config bool is {Plugin.Configuration.SomePropertyToBeSavedAndWithADefault}");
 
@@ -95,6 +99,12 @@ public class MainWindow : Window, IDisposable
                 {
                     ImGui.TextUnformatted("Invalid territory.");
                 }
+                ImGui.TextUnformatted($"timestamp: {Plugin.timestamp}");
+                ImGui.TextUnformatted($"time diff: {Plugin.timestamp.AddMilliseconds(3000).CompareTo(DateTime.Now)} <0");
+                ImGui.TextUnformatted($"weapon sheathed: {UIState.Instance()->WeaponState.IsUnsheathed}");
+
+
+                ImGui.TextUnformatted($"target == null?: {localPlayer.TargetObject == null}");
             }
         }
     }
