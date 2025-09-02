@@ -1,0 +1,12 @@
+{
+  "Author": "Kijata",
+  "Name": "AutoSheathe",
+  "Punchline": "Weapon be gone (in trios).",
+  "Description": "This plugin activates the auto-sheathe function out of combat also in combat, if you don't have a target.\nConfigurable Delay.",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "qol",
+    "plugin",
+    "combat"
+  ]
+}
