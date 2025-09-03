@@ -20,11 +20,10 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] public static IFramework Framework { get; private set; } = null!;
     [PluginService] internal static IPluginLog Log { get; private set; } = null!;
 
-    private const string CommandName = "/autosheathe";
 
     public Configuration Configuration { get; init; }
     public readonly WindowSystem WindowSystem = new("AutoSheathe");
-    private MainWindow MainWindow { get; init; }
+    private ConfigWindow ConfigWindow { get; init; }
     public DateTime timestamp { get; set; }
     public int setInterval { get; set; }
     private bool timerStarted;
@@ -33,18 +32,14 @@ public sealed class Plugin : IDalamudPlugin
     {
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
-        MainWindow = new MainWindow(this);
-        WindowSystem.AddWindow(MainWindow);
+        ConfigWindow = new ConfigWindow(this);
+        WindowSystem.AddWindow(ConfigWindow);
 
-        CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
-        {
-            HelpMessage = "Open config window."
-        });
 
         PluginInterface.UiBuilder.Draw += DrawUI;
 
         // Adds another button doing the same but for the main ui of the plugin
-        PluginInterface.UiBuilder.OpenMainUi += ToggleMainUI;
+        PluginInterface.UiBuilder.OpenConfigUi += ToggleConfigUI;
 
         Framework.Update += CombatTimer;
         this.timestamp = DateTime.Now;
@@ -56,17 +51,11 @@ public sealed class Plugin : IDalamudPlugin
     {
         WindowSystem.RemoveAllWindows();
 
-        MainWindow.Dispose();
+        ConfigWindow.Dispose();
 
-        CommandManager.RemoveHandler(CommandName);
         Framework.Update -= CombatTimer;
     }
 
-    private void OnCommand(string command, string args)
-    {
-        // In response to the slash command, toggle the display status of our main ui
-        ToggleMainUI();
-    }
     private unsafe void CombatTimer(IFramework framework)
     {
         if (!IsInCombatButNoTarget())
@@ -110,5 +99,5 @@ public sealed class Plugin : IDalamudPlugin
     }
     private void DrawUI() => WindowSystem.Draw();
 
-    public void ToggleMainUI() => MainWindow.Toggle();
+    public void ToggleConfigUI() => ConfigWindow.Toggle();
 }

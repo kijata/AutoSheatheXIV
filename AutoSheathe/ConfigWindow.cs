@@ -4,7 +4,7 @@ using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Windowing;
 namespace AutoSheathe.Windows;
 
-public class MainWindow : Window, IDisposable
+public class ConfigWindow : Window, IDisposable
 {
     private Configuration config;
 
@@ -12,7 +12,7 @@ public class MainWindow : Window, IDisposable
     // We give this window a hidden ID using ##.
     // The user will see "My Amazing Window" as window title,
     // but for ImGui the ID is "My Amazing Window##With a hidden ID"
-    public MainWindow(Plugin plugin)
+    public ConfigWindow(Plugin plugin)
         : base("AutoSheathe##ASheathe")
     {
         config = plugin.Configuration;
