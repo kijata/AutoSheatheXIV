@@ -68,10 +68,11 @@ public sealed class Plugin : IDalamudPlugin
         { if (this.timerStarted == false)
             {
                 this.timerStarted = true;
-                this.timestamp = DateTime.Now;
+                var rand = new Random();
+                this.timestamp = DateTime.Now.AddMilliseconds(Configuration.sheatheTime*1000+rand.Next(2000));
             }
         }
-        if ((this.timestamp.AddMilliseconds(Configuration.sheatheTime*1000).CompareTo(DateTime.Now) < 0) &&
+        if ((this.timestamp.CompareTo(DateTime.Now) < 0) &&
             IsInCombatButNoTarget() && 
             (this.timerStarted == true) )
         {
@@ -88,6 +89,11 @@ public sealed class Plugin : IDalamudPlugin
         var ret = false;
         if (localPlayer == null)
         {
+            return false;
+        }
+        if (localPlayer.CurrentHp == 0)
+        {
+            //if dead
             return false;
         }
         // if in combat, not weapon sheathed, has no target AND is not casting, return true
